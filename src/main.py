@@ -18,7 +18,7 @@ def parse_args():
 	'''
 	parser = argparse.ArgumentParser(description="Run struc2vec.")
 
-	parser.add_argument('--input', nargs='?', default='graph/karate.edgelist',
+	parser.add_argument('--input', nargs='?', default='graph/karate-mirrored.edgelist',
 	                    help='Input graph path')
 
 	parser.add_argument('--output', nargs='?', default='emb/karate.emb',
@@ -60,7 +60,7 @@ def parse_args():
 	parser.add_argument('--OPT2', default=False, type=bool,
                       help='optimization 2')
 	parser.add_argument('--OPT3', default=False, type=bool,
-                      help='optimization 3')	
+                      help='optimization 3')
 	return parser.parse_args()
 
 def read_graph():
@@ -78,10 +78,15 @@ def learn_embeddings():
 	'''
 	logging.info("Initializing creation of the representations...")
 	walks = LineSentence('random_walks.txt')
-	model = Word2Vec(walks, size=args.dimensions, window=args.window_size, min_count=0, hs=1, sg=1, workers=args.workers, iter=args.iter)
-	model.wv.save_word2vec_format(args.output)
+	model = Word2Vec(walks,\
+	                 size=args.dimensions,\
+					 window=args.window_size,\
+					 min_count=0, hs=1, sg=1,\
+					 workers=args.workers,\
+					 iter=args.iter)
+	model.save_word2vec_format(args.output)
 	logging.info("Representations created.")
-	
+
 	return
 
 def exec_struc2vec(args):
@@ -110,20 +115,18 @@ def exec_struc2vec(args):
 
 	G.create_distances_network()
 	G.preprocess_parameters_random_walk()
-
 	G.simulate_walks(args.num_walks, args.walk_length)
 
 
 	return G
 
 def main(args):
-
+	# Run Struc2Vec
 	G = exec_struc2vec(args)
-
+	# Run Word2Vec
 	learn_embeddings()
 
 
 if __name__ == "__main__":
 	args = parse_args()
 	main(args)
-

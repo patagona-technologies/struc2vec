@@ -39,7 +39,7 @@ def getCompactDegreeLists(g, root, maxDegree,calcUntilLayer):
     queue.append(root)
     vetor_marcacao[root] = 1
     l = {}
-    
+
     ## Variáveis de controle de distância
     depth = 0
     pendingDepthIncrease = 0
@@ -58,7 +58,7 @@ def getCompactDegreeLists(g, root, maxDegree,calcUntilLayer):
             if(vetor_marcacao[v] == 0):
                 vetor_marcacao[v] = 1
                 queue.append(v)
-                pendingDepthIncrease += 1    
+                pendingDepthIncrease += 1
 
         if(timeToDepthIncrease == 0):
 
@@ -94,10 +94,10 @@ def getDegreeLists(g, root, calcUntilLayer):
     queue = deque()
     queue.append(root)
     vetor_marcacao[root] = 1
-    
+
 
     l = deque()
-    
+
     ## Variáveis de controle de distância
     depth = 0
     pendingDepthIncrease = 0
@@ -113,7 +113,7 @@ def getDegreeLists(g, root, calcUntilLayer):
             if(vetor_marcacao[v] == 0):
                 vetor_marcacao[v] = 1
                 queue.append(v)
-                pendingDepthIncrease += 1    
+                pendingDepthIncrease += 1
 
         if(timeToDepthIncrease == 0):
 
@@ -196,7 +196,7 @@ def verifyDegrees(degrees,degree_v_root,degree_a,degree_b):
     else:
         degree_now = degree_a
 
-    return degree_now 
+    return degree_now
 
 def get_vertices(v,degree_v,degrees,a_vertices):
     a_vertices_selected = 2 * math.log(a_vertices,2)
@@ -204,7 +204,7 @@ def get_vertices(v,degree_v,degrees,a_vertices):
     vertices = deque()
 
     try:
-        c_v = 0  
+        c_v = 0
 
         for v2 in degrees[degree_v]['vertices']:
             if(v != v2):
@@ -243,7 +243,7 @@ def get_vertices(v,degree_v,degrees,a_vertices):
                     degree_a = -1
                 else:
                     degree_a = degrees[degree_a]['after']
-            
+
             if(degree_b == -1 and degree_a == -1):
                 raise StopIteration
 
@@ -332,7 +332,7 @@ def calc_distances_all(vertices,list_vertices,degreeList,part, compactDegree = F
 
         for v2 in list_vertices[cont]:
             lists_v2 = degreeList[v2]
-            
+
             max_layer = min(len(lists_v1),len(lists_v2))
             distances[v1,v2] = {}
 
@@ -340,9 +340,9 @@ def calc_distances_all(vertices,list_vertices,degreeList,part, compactDegree = F
                 #t0 = time()
                 dist, path = fastdtw(lists_v1[layer],lists_v2[layer],radius=1,dist=dist_func)
                 #t1 = time()
-                #logging.info('D ({} , {}), Tempo fastDTW da camada {} : {}s . Distância: {}'.format(v1,v2,layer,(t1-t0),dist))    
+                #logging.info('D ({} , {}), Tempo fastDTW da camada {} : {}s . Distância: {}'.format(v1,v2,layer,(t1-t0),dist))
                 distances[v1,v2][layer] = dist
-                
+
 
         cont += 1
 
@@ -466,11 +466,11 @@ def exec_bfs(G,workers,calcUntilLayer):
 def generate_distances_network_part1(workers):
     parts = workers
     weights_distances = {}
-    for part in range(1,parts + 1):    
-        
+    for part in range(1,parts + 1):
+
         logging.info('Executing part {}...'.format(part))
         distances = restoreVariableFromDisk('distances-'+str(part))
-        
+
         for vertices,layers in distances.iteritems():
             for layer,distance in layers.iteritems():
                 vx = vertices[0]
@@ -500,9 +500,9 @@ def generate_distances_network_part2(workers):
                 if(layer not in graphs):
                     graphs[layer] = {}
                 if(vx not in graphs[layer]):
-                   graphs[layer][vx] = [] 
+                   graphs[layer][vx] = []
                 if(vy not in graphs[layer]):
-                   graphs[layer][vy] = [] 
+                   graphs[layer][vy] = []
                 graphs[layer][vx].append(vy)
                 graphs[layer][vy].append(vx)
         logging.info('Part {} executed.'.format(part))
@@ -523,7 +523,7 @@ def generate_distances_network_part3():
         alias_method_j = {}
         alias_method_q = {}
         weights = {}
-    
+
         for v,neighbors in graphs.iteritems():
             e_list = deque()
             sum_w = 0.0
@@ -576,7 +576,7 @@ def generate_distances_network_part5():
     alias_method_j_c = {}
     layer = 0
     while(isPickle('alias_method_j-layer-'+str(layer))):
-        logging.info('Executing layer {}...'.format(layer))          
+        logging.info('Executing layer {}...'.format(layer))
         alias_method_j = restoreVariableFromDisk('alias_method_j-layer-'+str(layer))
         alias_method_j_c[layer] = alias_method_j
         logging.info('Layer {} executed.'.format(layer))
@@ -591,7 +591,7 @@ def generate_distances_network_part6():
     alias_method_q_c = {}
     layer = 0
     while(isPickle('alias_method_q-layer-'+str(layer))):
-        logging.info('Executing layer {}...'.format(layer))          
+        logging.info('Executing layer {}...'.format(layer))
         alias_method_q = restoreVariableFromDisk('alias_method_q-layer-'+str(layer))
         alias_method_q_c[layer] = alias_method_q
         logging.info('Layer {} executed.'.format(layer))
@@ -607,6 +607,7 @@ def generate_distances_network(workers):
     logging.info('Creating distance network...')
 
     os.system("rm "+returnPathStruc2vec()+"/../pickles/weights_distances-layer-*.pickle")
+    print("----->", returnPathStruc2vec())
     with ProcessPoolExecutor(max_workers=1) as executor:
         job = executor.submit(generate_distances_network_part1,workers)
         job.result()
@@ -660,7 +661,7 @@ def generate_distances_network(workers):
     t1 = time()
     t = t1-t0
     logging.info('- Time - part 6: {}s'.format(t))
- 
+
     return
 
 

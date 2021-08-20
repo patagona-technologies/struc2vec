@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from time import time
 import logging,inspect
-import cPickle as pickle
+import pickle
 from itertools import islice
 import os.path
 
@@ -43,8 +43,3 @@ def saveVariableOnDisk(f,name):
     logging.info('Variable saved. Time: {}m'.format((t1-t0)/60))
 
     return
-
-
-
-
-

@@ -33,7 +33,7 @@ class Graph():
 
 		with ProcessPoolExecutor(max_workers=self.workers) as executor:
 			job = executor.submit(exec_bfs,self.G,self.workers,self.calcUntilLayer)
-			
+
 			job.result()
 
 		return
@@ -42,7 +42,7 @@ class Graph():
 
 		with ProcessPoolExecutor(max_workers=self.workers) as executor:
 			job = executor.submit(exec_bfs_compact,self.G,self.workers,self.calcUntilLayer)
-			
+
 			job.result()
 
 		return
@@ -51,7 +51,7 @@ class Graph():
 
 		with ProcessPoolExecutor(max_workers=self.workers) as executor:
 			job = executor.submit(preprocess_degreeLists)
-			
+
 			job.result()
 
 		return
@@ -67,7 +67,7 @@ class Graph():
 			degrees_sorted.add(degree)
 			if(degree not in degrees):
 				degrees[degree] = {}
-				degrees[degree]['vertices'] = deque() 
+				degrees[degree]['vertices'] = deque()
 			degrees[degree]['vertices'].append(v)
 		degrees_sorted = np.array(list(degrees_sorted),dtype='int')
 		degrees_sorted = np.sort(degrees_sorted)
@@ -126,11 +126,11 @@ class Graph():
 				job.result()
 				r = futures[job]
 				logging.info("Part {} Completed.".format(r))
-		
+
 		logging.info('Distances calculated.')
 		t1 = time()
 		logging.info('Time : {}m'.format((t1-t0)/60))
-		
+
 		return
 
 
@@ -152,7 +152,6 @@ class Graph():
 		chunks = partition(vertices,parts)
 
 		with ProcessPoolExecutor(max_workers = 1) as executor:
-
 			logging.info("Split degree List...")
 			part = 1
 			for c in chunks:
@@ -161,9 +160,8 @@ class Graph():
 				logging.info("degreeList {} completed.".format(part))
 				part += 1
 
-		
-		with ProcessPoolExecutor(max_workers = self.workers) as executor:
 
+		with ProcessPoolExecutor(max_workers = self.workers) as executor:
 			part = 1
 			for c in chunks:
 				logging.info("Executing part {}...".format(part))
@@ -205,7 +203,6 @@ class Graph():
 		return
 
 	def preprocess_parameters_random_walk(self):
-
 		with ProcessPoolExecutor(max_workers=1) as executor:
 			job = executor.submit(generate_parameters_random_walk,self.workers)
 
@@ -215,7 +212,6 @@ class Graph():
 
 
 	def simulate_walks(self,num_walks,walk_length):
-
 		# for large graphs, it is serially executed, because of memory use.
 		if(len(self.G) > 500000):
 
@@ -232,14 +228,4 @@ class Graph():
 				job.result()
 
 
-		return	
-
-
-
-
-
-		
-
-      	
-
-
+		return

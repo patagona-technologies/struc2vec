@@ -16,12 +16,12 @@ def generate_parameters_random_walk(workers):
 
     sum_weights = {}
     amount_edges = {}
-    
+
     layer = 0
     while(isPickle('distances_nets_weights-layer-'+str(layer))):
-        logging.info('Executing layer {}...'.format(layer))            
+        logging.info('Executing layer {}...'.format(layer))
         weights = restoreVariableFromDisk('distances_nets_weights-layer-'+str(layer))
-    
+
         for k,list_weights in weights.iteritems():
             if(layer not in sum_weights):
                 sum_weights[layer] = 0
@@ -31,7 +31,7 @@ def generate_parameters_random_walk(workers):
             for w in list_weights:
                 sum_weights[layer] += w
                 amount_edges[layer] += 1
-        
+
         logging.info('Layer {} executed.'.format(layer))
         layer += 1
 
@@ -46,7 +46,7 @@ def generate_parameters_random_walk(workers):
 
     layer = 0
     while(isPickle('distances_nets_weights-layer-'+str(layer))):
-        logging.info('Executing layer {}...'.format(layer))            
+        logging.info('Executing layer {}...'.format(layer))
         weights = restoreVariableFromDisk('distances_nets_weights-layer-'+str(layer))
 
         amount_neighbours[layer] = {}
@@ -95,7 +95,7 @@ def exec_random_walk(graphs,alias_method_j,alias_method_q,v,walk_length,amount_n
             limiar_moveup = prob_moveup(amount_neighbours[layer][v])
             if(r > limiar_moveup):
                 if(layer > initialLayer):
-                    layer = layer - 1           
+                    layer = layer - 1
             else:
                 if((layer + 1) in graphs and v in graphs[layer + 1]):
                     layer = layer + 1
@@ -123,7 +123,7 @@ def generate_random_walks_large_graphs(num_walks,walk_length,workers,vertices):
 
     logging.info('Creating RWs...')
     t0 = time()
-    
+
     walks = deque()
     initialLayer = 0
 
@@ -156,7 +156,7 @@ def generate_random_walks(num_walks,walk_length,workers,vertices):
 
     logging.info('Creating RWs...')
     t0 = time()
-    
+
     walks = deque()
     initialLayer = 0
 
