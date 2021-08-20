@@ -2,7 +2,7 @@ import sys
 from setuptools import setup, find_packages
 
 PACKAGE_NAME = 'struc2vec'
-MINIMUM_PYTHON_VERSION = 2, 7
+MINIMUM_PYTHON_VERSION = 3, 7
 
 
 def check_python_version():

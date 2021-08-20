@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Graph utilities."""
+"""
+Graph utilities.
+"""
 
 import logging
 import sys
@@ -30,7 +32,9 @@ import operator
 
 
 class Graph(defaultdict):
-  """Efficient basic implementation of nx `Graph' â€“ Undirected graphs with self loops"""
+  """
+  Efficient basic implementation of nx `Graph' â€“ Undirected graphs with self loops
+  """
   def __init__(self):
     super(Graph, self).__init__(list)
 
@@ -38,7 +42,7 @@ class Graph(defaultdict):
     return self.keys()
 
   def adjacency_iter(self):
-    return self.iteritems()
+    return self.items()
 
   def subgraph(self, nodes={}):
     subgraph = Graph()
@@ -124,12 +128,12 @@ class Graph(defaultdict):
 
   def gToDict(self):
     d = {}
-    for k,v in self.iteritems():
+    for k,v in self.items():
       d[k] = v
     return d
 
   def printAdjList(self):
-    for key,value in self.iteritems():
+    for key,value in self.items():
       print (key,":",value)
 
 
@@ -280,7 +284,7 @@ def from_adjlist_unchecked(adjlist):
 
 def from_dict(d):
     G = Graph()
-    for k,v in d.iteritems():
+    for k,v in d.items():
       G[k] = v
 
     return G
