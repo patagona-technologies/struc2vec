@@ -1,16 +1,20 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import argparse, logging
+import logging
+import argparse
 import numpy as np
-import struc2vec
+from time import time
 from gensim.models import Word2Vec
 from gensim.models.word2vec import LineSentence
-from time import time
 
 import graph
+import struc2vec
 
 logging.basicConfig(filename='struc2vec.log',filemode='w',level=logging.DEBUG,format='%(asctime)s %(message)s')
+
+# MLFLOW
+import mlflow
 
 def parse_args():
 	'''
@@ -86,6 +90,7 @@ def learn_embeddings():
 					 epochs=args.iter)
 	model.wv.save_word2vec_format(args.output)
 	logging.info("Representations created.")
+	mlflow.log_artifact(args.output)
 
 	return
 
@@ -120,10 +125,17 @@ def exec_struc2vec(args):
 	return G
 
 def main(args):
-	# Run Struc2Vec
-	G = exec_struc2vec(args)
-	# Run Word2Vec
-	learn_embeddings()
+	mlflow.set_experiment("struc2vec")
+	with mlflow.start_run():
+		# Log params
+		mlflow.log_param("input", args.input)
+		mlflow.log_param("num_walks", args.num_walks)
+		mlflow.log_param("walk_length", args.walk_length)
+		mlflow.log_param("directed", args.directed)
+		# Run Struc2Vec
+		G = exec_struc2vec(args)
+		# Run Word2Vec
+		learn_embeddings()
 
 
 if __name__ == "__main__":

@@ -6,3 +6,6 @@ fastdtw==0.3.4
 gensim==4.0.1
 python-Levenshtein==0.12.2
 smart-open==5.2.0
+mlflow
+google-cloud-storage
+cloudml-hypertune
