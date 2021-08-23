@@ -16,12 +16,12 @@ RUN mkdir pickles
 RUN pip install -e .
 
 # Copy over the GCP login file
-COPY cp-0308b-28dc9b0b1cdb.json /usr/src/app/
+COPY cp-0308b-ee1a09e5fded.json /usr/src/app/
 
 ENV MLFLOW_TRACKING_URI=https://mlflow-up3b2lt5ha-uw.a.run.app
 ENV MLFLOW_TRACKING_USERNAME=patagona
 ENV MLFLOW_TRACKING_PASSWORD=cp0308b-password-93784
-ENV GOOGLE_APPLICATION_CREDENTIALS=cp-0308b-28dc9b0b1cdb.json
+ENV GOOGLE_APPLICATION_CREDENTIALS=cp-0308b-ee1a09e5fded.json
 
 # Sets up the entry point to invoke the trainer.
 ENTRYPOINT ["python3", "src/main.py"]
